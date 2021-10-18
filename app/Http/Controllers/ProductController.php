@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,8 +15,28 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('created_at', 'desc')->paginate(18);
-        return view('products', ['products' => $products]);
+        $pagination = 9;
+        $categories = Category::all();
+
+        if (request()->category) {
+            $products = Product::with('categories')->whereHas('categories', function ($query) {
+                $query->where('slug', request()->category);
+            });
+            $categoryName = optional($categories->where('name', request()->category)->first())->name;
+        } else {
+            $products = Product::orderBy('created_at', 'desc')->paginate($pagination);
+            $categoryName = 'Featured';
+        }
+
+        // if (request()->sort == 'low_high') {
+        //     $products = $products->orderBy('price')->paginate($pagination);
+        // } elseif (request()->sort == 'high_low') {
+        //     $products = $products->orderBy('price', 'desc')->paginate($pagination);
+        // } else {
+        //     $products = $products->paginate($pagination);
+        // }
+
+        return view('products', ['products' => $products, 'categoryName' => $categoryName, 'categories' => $categories]);
     }
 
     /**
@@ -47,7 +68,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('singleProduct', ['product' => $product]);
     }
 
     /**

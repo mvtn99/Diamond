@@ -646,7 +646,7 @@ Version:1.0
 }
 
 .header.shop .search-bar {
-    width: 380px;
+    width: 450px;
     height: 50px;
     display: inline-block;
     background: #fff;
@@ -704,8 +704,8 @@ Version:1.0
     border: none;
     font-size: 14px;
     font-weight: 400;
-    padding: 0 25px 0 20px;
-    width: 328px;
+    outline: none;
+    width: 230px;
 }
 .header.shop .search-bar .btnn {
     height: 50px;
@@ -2226,7 +2226,9 @@ Version:1.0
 .shop .shop-top {
     clear: both;
     background: #f6f7fb;
-    padding: 18px 20px 50px 20px;
+    padding: 18px 20px 20px 20px;
+    display: flex;
+    justify-content: space-between;
 }
 .shop .shop-shorter {
     float: left;
@@ -3688,7 +3690,6 @@ Version:1.0
 ===============================*/
 .cown-down {
     position: relative;
-    height: 515px;
     overflow: hidden;
 }
 .cown-down .padding-right {

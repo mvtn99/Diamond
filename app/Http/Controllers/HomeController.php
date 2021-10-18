@@ -10,16 +10,6 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // $this->middleware('auth');
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -33,5 +23,10 @@ class HomeController extends Controller
         $accessory_item = Product::where('category_id', 4)->orderBy('created_at', 'desc')->take(9)->get();
         $perfume_item = Product::where('category_id', 5)->orderBy('created_at', 'desc')->take(9)->get();
         return view('home', ['man_item' => $man_item, 'woman_item' => $woman_item, 'kids_item' => $kids_item, 'accessory_item' => $accessory_item, 'perfume_item' => $perfume_item, 'posts' => $posts]);
+    }
+
+    public function contact()
+    {
+        return view('contact');
     }
 }

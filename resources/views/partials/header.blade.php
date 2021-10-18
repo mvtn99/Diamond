@@ -64,7 +64,7 @@
 					<div class="col-lg-2 col-md-2 col-12">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="index.html"><img src="images/logo.png" alt="logo"></a>
+							<a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="logo"></a>
 						</div>
 						<!--/ End Logo -->
 						<!-- Search Form -->
@@ -85,21 +85,26 @@
 					<div class="col-lg-8 col-md-7 col-12">
 						<div class="search-bar-top">
 							<div class="search-bar">
-                                <form>
-                                    
+								<select>
+									<option selected="selected">All Category</option>
+									<option>watch</option>
+									<option>mobile</option>
+									<option>kid’s item</option>
+								</select>
+								<form>
 									<input name="search" placeholder="Search Products Here....." type="search">
 									<button class="btnn"><i class="ti-search"></i></button>
 								</form>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-2 col-md-3 col-12 justify">
+					<div class="col-lg-2 col-md-3 col-12">
 						<div class="right-bar">
 							<!-- Search Form -->
 							<div class="sinlge-bar">
 								<a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
 							</div>
-							<div class="sinlge-bar shopping pr-4">
+							<div class="sinlge-bar shopping">
 								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
 								<!-- Shopping Item -->
 								<div class="shopping-item">
@@ -217,15 +222,9 @@
 										<div class="nav-inner">	
 											<ul class="nav main-menu menu navbar-nav">
                                                 <li class="{{  request()->routeIs('home') ? 'active' : '' }}"><a href="{{ Route('home') }}">Home</a></li>
-                                                <li class="{{  request()->routeIs('products.index') ? 'active' : '' }}"><a href="{{ Route('products.index') }}">Products</a></li>
-                                                <li><a href="#">Shop<i class="ti-angle-down"></i></a>
-                                                    <ul class="dropdown">
-                                                        <li><a href="cart.html">Cart</a></li>
-                                                        <li><a href="checkout.html">Checkout</a></li>
-                                                    </ul>
-                                                </li>                           
+                                                <li class="{{  request()->routeIs('products.index') ? 'active' : '' }}"><a href="{{ Route('products.index') }}">Shop</a></li>                        
                                                 <li class="{{  request()->routeIs('posts.index') ? 'active' : '' }}"><a href="{{ Route('posts.index') }}">Blog<span class="new">New</span></a></li>
-                                                <li class="{{  request()->is('/contact-us') ? 'active' : '' }}"><a href="contact.html">Contact Us</a></li>
+                                                <li class="{{  request()->routeIs('contact-us') ? 'active' : '' }}"><a href="{{ Route('contact-us') }}">Contact Us</a></li>
                                             </ul>
 										</div>
 									</div>

@@ -1,7 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
+
+<x-breadcrumbs>
+    <li>
+        <a href="{{ route('login') }}">{{ __('Login') }}</a>
+    </li>
+</x-breadcrumbs>
+
+<section class="shop login section">
+    <div class="container">
+        <div class="row"> 
+            <div class="col-lg-6 offset-lg-3 col-12">
+                <div class="login-form">
+                    <h2>{{ __('Login') }}</h2>
+                    <p>Please register in order to checkout more quickly</p>
+                    <!-- Form -->
+                    <form class="form" method="post" action="{{ route('login') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{{ __('E-Mail Address') }}<span>*</span></label>
+                                    <input type="text" name="email" class="@error('email') is-invalid @enderror" placeholder="" required="required">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{{ __('Password') }}<span>*</span></label>
+                                    <input type="password" name="password" class="@error('password') is-invalid @enderror" placeholder="" required="required">
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group login-btn">
+                                    <button class="btn" type="submit">{{ __('Login') }}</button>
+                                    <a href="{{ route('register') }}" class="btn">{{ __('Register') }}</a>
+                                </div>
+                                <div class="checkbox">
+                                    <label class="checkbox-inline" for="2"><input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>Remember me</label>
+                                </div>
+                                <a href="{{ route('password.request') }}" class="lost-pass">{{ __('Forgot Your Password?') }}</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--/ End Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{{-- <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -69,5 +129,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection
