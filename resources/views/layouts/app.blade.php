@@ -42,6 +42,7 @@
     <div id="app">
         @include('partials.header')
         <main>
+			@include('flash::message')
             @yield('content')
         </main>
         @include('partials.footer')

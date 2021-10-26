@@ -8,7 +8,7 @@
                     <h2><span>Sent</span> Successfully</h2>
                     <p>Thank you so much for your message. We check e-mail frequently and will try our best to respond to your inquiry.</p>
                     <div class="button">
-                        <a class="btn primary" href="index.html">Go Home</a>
+                        <a class="btn primary" href="{{ route('home') }}">Go Home</a>
                     </div>
                 </div>
             </div>

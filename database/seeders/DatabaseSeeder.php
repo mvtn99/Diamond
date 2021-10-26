@@ -18,10 +18,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(22)->create();
-        Admin::factory(5)->create();
-        Post::factory(30)->create();
-        Product::factory(100)->create();
-        Comment::factory(100)->create();
+        $this->call([
+            ProductCategoriesTableSeeder::class,
+            ProductSubcategorySeeder::class,
+            ProductSeeder::class,
+            CommentSeeder::class,
+            CouponTableSeeder::class
+        ]);
     }
 }

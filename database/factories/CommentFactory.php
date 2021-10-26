@@ -26,7 +26,7 @@ class CommentFactory extends Factory
             'email' => $this->faker->email(),
             'body' => $this->faker->sentence(30),
             'product_id' => rand(13, 60),
-            'user_id' => rand(1, 22)
+            'user_id' => rand(1, 2)
         ];
     }
 }

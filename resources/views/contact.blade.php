@@ -3,7 +3,7 @@
     <!-- Start Contact -->
     <x-breadcrumbs>
 		<li>
-			<a href="{{ route('contact-us') }}">Contact</a>
+			<a href="{{ route('contact.index') }}">Contact</a>
 		</li>
     </x-breadcrumbs>
 	<section id="contact-us" class="contact-us section">
@@ -16,36 +16,37 @@
 									<h4>Get in touch</h4>
 									<h3>Write us a message</h3>
 								</div>
-								<form class="form" method="post" action="mail/mail.php">
+								<form class="form" method="post" action="{{ route('contact.send') }}">
+									@csrf
 									<div class="row">
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>Your Name<span>*</span></label>
-												<input name="name" type="text" placeholder="">
+												<input name="name" type="text" placeholder="" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>Your Subjects<span>*</span></label>
-												<input name="subject" type="text" placeholder="">
+												<input name="subject" type="text" placeholder="" required>
 											</div>
 										</div>
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
 												<label>Your Email<span>*</span></label>
-												<input name="email" type="email" placeholder="">
+												<input name="email" type="email" placeholder="" required>
 											</div>	
 										</div>
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
-												<label>Your Phone<span>*</span></label>
-												<input name="company_name" type="text" placeholder="">
+												<label>Your Phone</label>
+												<input name="phone" type="text" placeholder="">
 											</div>	
 										</div>
 										<div class="col-12">
 											<div class="form-group message">
 												<label>your message<span>*</span></label>
-												<textarea name="message" placeholder=""></textarea>
+												<textarea name="message" placeholder="" required></textarea>
 											</div>
 										</div>
 										<div class="col-12">

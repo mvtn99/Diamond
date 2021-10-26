@@ -2,7 +2,7 @@
 @section('content')
 <x-breadcrumbs>
     <li>
-        {{-- <a href="{{ route('products.show', ['product' => $product]) }}">Product Details</a> --}}
+        <a href="{{ route('cart.index', ['cart' => $cart]) }}">Cart</a>
     </li>
 </x-breadcrumbs>
     <!-- Shopping Cart -->
@@ -23,84 +23,45 @@
 							</tr>
 						</thead>
 						<tbody>
+							@if (Cart::count() == 0)
+								<tr>
+									<td>There is no item in your cart</td>
+								</tr>
+							@endif
+							@foreach ($cart as $item)
 							<tr>
-								<td class="image" data-title="No"><img src="images/cart1.jpg" alt="#"></td>
+								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
 								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
+									<p class="product-name"><a href="#">{{ $item->name }}</a></p>
+										<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
 								</td>
-								<td class="price" data-title="Price"><span>$110.00 </span></td>
+								<td class="price" data-title="Price"><span>${{ priceFormat($item->price) }}</span></td>
 								<td class="qty" data-title="Qty"><!-- Input Order -->
 									<div class="input-group">
 										<div class="button minus">
-											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-												<i class="ti-minus"></i>
+											<button type="button" class="btn btn-primary btn-number" data-type="minus" data-field="quant[1]">
+												<i data-id="{{ $item->rowId }}" data-productQuantity="{{ $item->model->stock }}" class="ti-minus update" data-update="decrement"></i>
 											</button>
 										</div>
-										<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="100" value="1">
+										<input id="quantity" readonly type="text" name="quant[1]" class="input-number"  data-min="1" data-max="100" value="{{ $item->qty }}">
 										<div class="button plus">
 											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-												<i class="ti-plus"></i>
+												<i data-id="{{ $item->rowId }}" data-productQuantity="{{ $item->model->stock }}" class="ti-plus update" data-update="increment"></i>
 											</button>
 										</div>
 									</div>
 									<!--/ End Input Order -->
 								</td>
-								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
-								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
-							<tr>
-								<td class="image" data-title="No"><img src="images/cart2.jpg" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
+								<td class="total-amount" data-title="Total"><span>${{ priceFormat($item->price*$item->qty) }}</span></td>
+								<td class="action" data-title="Remove">
+									<a class="pointer" onclick="document.getElementById('remove{{$item->id}}').submit();"><i class="ti-trash remove-icon"></i></a>
+									<form id="remove{{$item->id}}" method="POST" action="{{ route('cart.destroy', ['rowId' => $item->rowId]) }}">
+										@csrf
+										@method('DELETE')
+									</form>
 								</td>
-								<td class="price" data-title="Price"><span>$110.00 </span></td>
-								<td class="qty" data-title="Qty"><!-- Input Order -->
-									<div class="input-group">
-										<div class="button minus">
-											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[2]">
-												<i class="ti-minus"></i>
-											</button>
-										</div>
-										<input type="text" name="quant[2]" class="input-number"  data-min="1" data-max="100" value="2">
-										<div class="button plus">
-											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[2]">
-												<i class="ti-plus"></i>
-											</button>
-										</div>
-									</div>
-									<!--/ End Input Order -->
-								</td>
-								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
-								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
-							<tr>
-								<td class="image" data-title="No"><img src="images/cart3.jpg" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00 </span></td>
-								<td class="qty" data-title="Qty"><!-- Input Order -->
-									<div class="input-group">
-										<div class="button minus">
-											<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[3]">
-												<i class="ti-minus"></i>
-											</button>
-										</div>
-										<input type="text" name="quant[3]" class="input-number"  data-min="1" data-max="100" value="3">
-										<div class="button plus">
-											<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[3]">
-												<i class="ti-plus"></i>
-											</button>
-										</div>
-									</div>
-									<!--/ End Input Order -->
-								</td>
-								<td class="total-amount" data-title="Total"><span>$220.88</span></td>
-								<td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
-							</tr>
+							</tr>	
+							@endforeach
 						</tbody>
 					</table>
 					<!--/ End Shopping Summery -->
@@ -113,28 +74,41 @@
 						<div class="row">
 							<div class="col-lg-8 col-md-5 col-12">
 								<div class="left">
-									<div class="coupon">
-										<form action="#" target="_blank">
-											<input name="Coupon" placeholder="Enter Your Coupon">
-											<button class="btn">Apply</button>
+									@if (! session()->has('coupon'))
+										<div class="coupon">
+											<form action="{{ route('coupon.store', ['cart' => $cart->all()]) }}" method="POST">
+												@csrf
+												<input name="coupon" placeholder="Enter Your Coupon">
+												<button type="submit" class="btn">Apply</button>
+											</form>
+										</div>
+									@else
+										<div class="mb-3">
+											Applied Coupon: {{ session()->get('coupon')['name'] }}
+										</div>
+										<form action="{{ route('coupon.destroy') }}" method="POST" style="display:block">
+											{{ csrf_field() }}
+											{{ method_field('delete') }}
+											<button class="btn" type="submit" style="font-size:14px;">Remove</button>
 										</form>
-									</div>
-									<div class="checkbox">
-										<label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label>
-									</div>
+									@endif
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
-										<li>Cart Subtotal<span>$330.00</span></li>
-										<li>Shipping<span>Free</span></li>
-										<li>You Save<span>$20.00</span></li>
-										<li class="last">You Pay<span>$310.00</span></li>
+										@if (session()->has('coupon'))
+											<li>Discount<span>${{ priceFormat($numbers['discount']) }}</span></li>
+										@endif
+										<li>Cart Subtotal<span>${{ priceFormat($numbers['subtotal']) }}</span></li>
+										<li>Tax(9%)<span>${{ priceFormat($numbers['tax']) }}</span></li>
+										<li class="last">Total<span>${{ priceFormat($numbers['total']) }}</span></li>
 									</ul>
 									<div class="button5">
-										<a href="#" class="btn">Checkout</a>
-										<a href="#" class="btn">Continue shopping</a>
+										@if (Cart::count() > 0)
+											<a href="{{ route('checkout.index') }}" class="btn">Checkout</a>
+										@endif
+										<a href="{{ route('home') }}" class="btn">Continue shopping</a>
 									</div>
 								</div>
 							</div>
@@ -194,4 +168,32 @@
 
     @include('partials.newsletter')
 
+@endsection
+@section('extra-js')
+	<script>
+		(function(){
+			const update = document.querySelectorAll('.update')
+
+			Array.from(update).forEach(function(element) {
+				element.addEventListener('click', function() {
+					const id = element.getAttribute('data-id')
+					const productQuantity = element.getAttribute('data-productQuantity')
+
+					axios.patch(`/cart/${id}`, {
+						type: this.getAttribute('data-update'),
+						productQuantity: productQuantity
+					})
+					.then(function (response) {
+						// console.log(response);
+						window.location.href = '{{ route('cart.index') }}'
+					})
+					.catch(function (error) {
+						// console.log(error);
+						window.location.href = '{{ route('cart.index') }}'
+					});
+				})
+			})
+
+		})();
+	</script>
 @endsection

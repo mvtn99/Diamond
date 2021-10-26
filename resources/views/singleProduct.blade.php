@@ -47,20 +47,32 @@
                                         <li><i class="fa fa-star-half-o"></i></li>
                                         <li class="dark"><i class="fa fa-star-o"></i></li>
                                     </ul>
-                                    <a href="#" class="total-review">(102) Review</a>
-                                    <div class="quickview-stock">
-                                        <span><i class="fa fa-check-circle-o"></i> in stock</span>
-                                    </div>
+                                    <div class="total-review">({{ $comments->count() }}) Reviews</div> 
+                                    @if ($product->stock > 5)
+                                        <div class="quickview-stock">
+                                            <span><i class="fa fa-check-circle-o" style="color: green;"></i> in stock</span>
+                                        </div>
+                                    @elseif ($product->stock > 0)
+                                        <div class="quickview-stock">
+                                            <span><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: rgb(220, 187, 0);"></i> low stock</span>
+                                        </div>
+                                    @else
+                                        <div class="quickview-stock">
+                                            <span><i class="fa fa-times" aria-hidden="true" style="color: red;"></i> not in stock</span>
+                                        </div>
+                                    @endif
+            
+                                    
                                 </div>
-                                <p class="price"><span class="discount">${{ priceFormat($product->price) }}</span><s>${{ priceFormat($product->price + 10) }}</s> </p>
-                                <p class="description">{{ $product->description }}</p>
+                                <p class="price"><span class="discount">${{ $product->price }}</span><s>${{ priceFormat($product->price + 10) }}</s> </p>
+                                <p class="description">eget velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus nisi posuere nisl, in</p>
                             </div>
                             <!--/ End Description -->
                             <!-- Color -->
                             <div class="color">
                                 <h4>Available Options <span>Color</span></h4>
                                 <ul>
-                                    <li><a href="#" class="one"><i class="ti-check"></i></a></li>
+                                    <li><a disabled href="#" class="one"><i class="ti-check"></i></a></li>
                                     <li><a href="#" class="two"><i class="ti-check"></i></a></li>
                                     <li><a href="#" class="three"><i class="ti-check"></i></a></li>
                                     <li><a href="#" class="four"><i class="ti-check"></i></a></li>
@@ -71,7 +83,7 @@
                             <div class="size">
                                 <h4>Size</h4>
                                 <ul>
-                                    <li><a href="#" class="one">S</a></li>
+                                    <li><a disabled href="#" class="one">S</a></li>
                                     <li><a href="#" class="two">M</a></li>
                                     <li><a href="#" class="three">L</a></li>
                                     <li><a href="#" class="four">XL</a></li>
@@ -81,30 +93,34 @@
                             <!--/ End Size -->
                             <!-- Product Buy -->
                             <div class="product-buy">
-                                <div class="quantity">
-                                    <h6>Quantity :</h6>
-                                    <!-- Input Order -->
-                                    <div class="input-group">
-                                        <div class="button minus">
-                                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                                <i class="ti-minus"></i>
-                                            </button>
+                                <form id="add-cart" action="{{ route('cart.store', ['product' => $product]) }}" method="post">
+                                    @csrf
+                                    <div class="quantity">
+                                        <h6>Quantity :</h6>
+                                        <!-- Input Order -->
+                                        <div class="input-group">
+                                            <div class="button minus">
+                                                <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quantity">
+                                                    <i class="ti-minus"></i>
+                                                </button>
+                                            </div>
+                                            <input type="text" name="quantity" class="input-number" data-min="1" data-max="1000" value="1">
+                                            <div class="button plus">
+                                                <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quantity">
+                                                    <i class="ti-plus"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000" value="1">
-                                        <div class="button plus">
-                                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                                                <i class="ti-plus"></i>
-                                            </button>
-                                        </div>
+                                        <!--/ End Input Order -->
                                     </div>
-                                    <!--/ End Input Order -->
-                                </div>
+                                </form>
                                 <div class="add-to-cart mt-3">
-                                    <a href="#" class="btn">Add to cart</a>
+                                    @if ($product->stock > 0)
+                                    <a class="btn" onclick="document.getElementById('add-cart').submit();" type="submit">Add to cart</a>
+                                    @endif
                                     <a href="#" class="btn min"><i class="ti-heart"></i></a>
-                                    <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
                                 </div>
-                                <p class="cat">Category :<a href="#">Clothing</a></p>
+                                <p class="cat">Category :<a href="{{ route('products.index', ['category' => $category->name]) }}">{{ ucfirst($category->name) }}</a></p>
                             </div>
                             <!--/ End Product Buy -->
                         </div>
@@ -129,10 +145,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="single-des">
-                                                    <p>simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with deskto</p>
-                                                </div>
-                                                <div class="single-des">
-                                                    <p>Suspendisse consequatur voluptates lorem nobis accumsan natus mattis. Optio pede, optio qui metus, delectus! Ultricies impedit, minus tempor fuga, quasi, pede felis commodo bibendum voluptas nisi? Voluptatem risus tempore tempora. Quaerat aspernatur? Error praesent laoreet, cras in fames hac ea, massa montes diamlorem nec quaerat, quos occaecati leo nam aliquet corporis, ab recusandae parturient, etiam fermentum, a quasi possimus commodi, mollis voluptate mauris mollis, quisque donec</p>
+                                                    {{ $product->description }}
                                                 </div>
                                             </div>
                                         </div>
@@ -147,50 +160,31 @@
                                                 <div class="ratting-main">
                                                     <div class="avg-ratting">
                                                         <h4>4.5 <span>(Overall)</span></h4>
-                                                        <span>Based on 1 Comments</span>
+                                                        <span>Based on {{ $comments->count() }} Comments</span>
                                                     </div>
-                                                    <!-- Single Rating -->
-                                                    <div class="single-rating">
-                                                        <div class="rating-author">
-                                                            <img src="images/comments1.jpg" alt="#">
-                                                        </div>
-                                                        <div class="rating-des">
-                                                            <h6>Naimur Rahman</h6>
-                                                            <div class="ratings">
-                                                                <ul class="rating">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star-half-o"></i></li>
-                                                                    <li><i class="fa fa-star-o"></i></li>
-                                                                </ul>
-                                                                <div class="rate-count">(<span>3.5</span>)</div>
+                                                    @foreach ($comments as $comment)
+                                                        <!-- Single Rating -->
+                                                        <div class="single-rating">
+                                                            <div class="rating-author">
+                                                                <img src="images/comments1.jpg" alt="#">
                                                             </div>
-                                                            <p>Duis tincidunt mauris ac aliquet congue. Donec vestibulum consequat cursus. Aliquam pellentesque nulla dolor, in imperdiet.</p>
-                                                        </div>
-                                                    </div>
-                                                    <!--/ End Single Rating -->
-                                                    <!-- Single Rating -->
-                                                    <div class="single-rating">
-                                                        <div class="rating-author">
-                                                            <img src="images/comments2.jpg" alt="#">
-                                                        </div>
-                                                        <div class="rating-des">
-                                                            <h6>Advin Geri</h6>
-                                                            <div class="ratings">
-                                                                <ul class="rating">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                </ul>
-                                                                <div class="rate-count">(<span>5.0</span>)</div>
+                                                            <div class="rating-des">
+                                                                <h6>{{ $comment->name }}</h6>
+                                                                <div class="ratings">
+                                                                    <ul class="rating">
+                                                                        <li><i class="fa fa-star"></i></li>
+                                                                        <li><i class="fa fa-star"></i></li>
+                                                                        <li><i class="fa fa-star"></i></li>
+                                                                        <li><i class="fa fa-star-half-o"></i></li>
+                                                                        <li><i class="fa fa-star-o"></i></li>
+                                                                    </ul>
+                                                                    <div class="rate-count">(<span>3.5</span>)</div>
+                                                                </div>
+                                                                <p>{{ $comment->body }}</p>
                                                             </div>
-                                                            <p>Duis tincidunt mauris ac aliquet congue. Donec vestibulum consequat cursus. Aliquam pellentesque nulla dolor, in imperdiet.</p>
                                                         </div>
-                                                    </div>
-                                                    <!--/ End Single Rating -->
+                                                        <!--/ End Single Rating -->
+                                                    @endforeach
                                                 </div>
                                                 <!-- Review -->
                                                 <div class="comment-review">
@@ -202,11 +196,11 @@
                                                     <div class="review-inner">
                                                         <div class="ratings">
                                                             <ul class="rating">
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
-                                                                <li><i class="fa fa-star"></i></li>
+                                                                <li><i class="fa fa-star-o rating_star"></i></li>
+                                                                <li><i class="fa fa-star-o rating_star"></i></li>
+                                                                <li><i class="fa fa-star-o rating_star"></i></li>
+                                                                <li><i class="fa fa-star-o rating_star"></i></li>
+                                                                <li><i class="fa fa-star-o rating_star"></i></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -255,4 +249,29 @@
     </div>
 </section>
 @include('partials.relatedProducts')
+@endsection
+@section('extra-js')
+    <script>
+        const ratingStars = [...document.getElementsByClassName("rating_star")];
+
+        function executeRating(stars) {
+            const starClassActive = "rating_star fa fa-star";
+            const starClassInactive = "rating_star fa fa-star-o";
+            const starsLength = stars.length;
+            let i;
+            stars.map((star) => {
+                star.onclick = () => {
+
+                    i = stars.indexOf(star);
+
+                    if (star.className===starClassInactive) {
+                        for (i; i >= 0; --i) stars[i].className = starClassActive;
+                    } else {
+                        for (++i; i < starsLength; ++i) stars[i].className = starClassInactive;
+                    }
+                };
+            });
+        }
+        executeRating(ratingStars);
+    </script>
 @endsection

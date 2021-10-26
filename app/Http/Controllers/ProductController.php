@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
+use App\Models\ProductSubcategory;
 
 class ProductController extends Controller
 {
@@ -16,27 +17,28 @@ class ProductController extends Controller
     public function index()
     {
         $pagination = 9;
-        $categories = Category::all();
+        $categories = ProductCategory::all();
+        $subcategories = ProductSubcategory::all();
 
         if (request()->category) {
-            $products = Product::with('categories')->whereHas('categories', function ($query) {
-                $query->where('slug', request()->category);
+            $products = Product::with('subcategory')->whereHas('subcategory', function ($query) {
+                $query->where('name', request()->category);
             });
-            $categoryName = optional($categories->where('name', request()->category)->first())->name;
+            $categoryName = optional($subcategories->where('name', request()->category)->first())->name;
         } else {
-            $products = Product::orderBy('created_at', 'desc')->paginate($pagination);
+            $products = Product::orderBy('created_at', 'desc');
             $categoryName = 'Featured';
         }
 
-        // if (request()->sort == 'low_high') {
-        //     $products = $products->orderBy('price')->paginate($pagination);
-        // } elseif (request()->sort == 'high_low') {
-        //     $products = $products->orderBy('price', 'desc')->paginate($pagination);
-        // } else {
-        //     $products = $products->paginate($pagination);
-        // }
-
-        return view('products', ['products' => $products, 'categoryName' => $categoryName, 'categories' => $categories]);
+        if (request()->sort == 'low_price') {
+            $products = $products->orderBy('price')->paginate($pagination);
+        } elseif (request()->sort == 'high_price') {
+            $products = $products->orderBy('price', 'desc')->paginate($pagination);
+        } else {
+            $products = $products->paginate($pagination);
+        }
+        // dd($products);
+        return view('products', ['products' => $products, 'categoryName' => $categoryName, 'categories' => $subcategories]);
     }
 
     /**
@@ -68,7 +70,21 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('singleProduct', ['product' => $product]);
+        $comments = $product->comment()->orderBy('created_at', 'desc')->get();
+        $category = $product->subcategory()->first();
+        return view('singleProduct', ['product' => $product, 'comments' => $comments, 'category' => $category]);
+    }
+
+    /**
+     * Display the specified resource for modal.
+     *
+     * @param  \App\Models\Product  $product
+     * @return \Illuminate\Http\Response
+     */
+    public function showModal(Product $product)
+    {
+        $comments = $product->comment()->orderBy('created_at', 'desc')->get();
+        return response()->json(['product' => $product, 'comments' => $comments, 'success' => true]);
     }
 
     /**

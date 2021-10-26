@@ -64,7 +64,7 @@
 					<div class="col-lg-2 col-md-2 col-12">
 						<!-- Logo -->
 						<div class="logo">
-							<a href="index.html"><img src="{{ asset('images/logo.png') }}" alt="logo"></a>
+							<a href="{{ route('home') }}"><img src="{{ asset('images/logo.png') }}" alt="logo"></a>
 						</div>
 						<!--/ End Logo -->
 						<!-- Search Form -->
@@ -72,8 +72,8 @@
 							<div class="top-search"><a href="#0"><i class="ti-search"></i></a></div>
 							<!-- Search Form -->
 							<div class="search-top">
-								<form class="search-form">
-									<input type="text" placeholder="Search here..." name="search">
+								<form class="search-form" action="{{ route('search') }}" method="GET">
+									<input type="text" placeholder="Search here..." name="query">
 									<button value="search" type="submit"><i class="ti-search"></i></button>
 								</form>
 							</div>
@@ -91,47 +91,57 @@
 									<option>mobile</option>
 									<option>kid’s item</option>
 								</select>
-								<form>
-									<input name="search" placeholder="Search Products Here....." type="search">
-									<button class="btnn"><i class="ti-search"></i></button>
+								<form action="{{ route('search') }}" method="GET">
+									<input name="query" placeholder="Search Products Here....." type="text">
+									<button class="btnn" type="submit"><i class="ti-search"></i></button>
 								</form>
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-12">
-						<div class="right-bar">
+						<div class="right-bar mr-2">
 							<!-- Search Form -->
 							<div class="sinlge-bar">
 								<a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
 							</div>
 							<div class="sinlge-bar shopping">
-								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
+								<a href="{{ route('cart.index') }}" class="single-icon">
+									<i class="ti-bag"></i>
+									@if (Cart::count() > 0)
+										<span class="total-count">{{ Cart::count() }}</span>
+									@endif
+								</a>
 								<!-- Shopping Item -->
 								<div class="shopping-item">
 									<div class="dropdown-cart-header">
-										<span>2 Items</span>
-										<a href="#">View Cart</a>
+										@if (Cart::count() > 0)
+											<span>{{ Cart::count() }} Items</span>
+										@else
+											<span>There is no item in cart</span>
+										@endif
+										<a href="{{ route('cart.index') }}">View Cart</a>
 									</div>
 									<ul class="shopping-list">
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Ring</a></h4>
-											<p class="quantity">1x - <span class="amount">$99.00</span></p>
-										</li>
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Necklace</a></h4>
-											<p class="quantity">1x - <span class="amount">$35.00</span></p>
-										</li>
+										@foreach (Cart::content() as $item)
+											<li>
+												<form id="remove{{$item->id}}" method="POST" action="{{ route('cart.destroy', ['rowId' => $item->rowId]) }}">
+													@csrf
+													@method('DELETE')
+												</form>
+												<a class="remove pointer" onclick="document.getElementById('remove{{$item->id}}').submit();"><i class="fa fa-remove"></i></a>
+					
+												<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+												<h4><a href="#">{{ $item->name }}</a></h4>
+												<p class="quantity">{{ $item->qty }}x - <span class="amount">${{ priceFormat($item->price) }}</span></p>
+											</li>
+										@endforeach
 									</ul>
 									<div class="bottom">
 										<div class="total">
 											<span>Total</span>
-											<span class="total-amount">$134.00</span>
+											<span class="total-amount">${{ Cart::total() }}</span>
 										</div>
-										<a href="checkout.html" class="btn animate">Checkout</a>
+										<a href="{{ route('checkout.index') }}" class="btn animate">Checkout</a>
 									</div>
 								</div>
 								<!--/ End Shopping Item -->
@@ -224,7 +234,7 @@
                                                 <li class="{{  request()->routeIs('home') ? 'active' : '' }}"><a href="{{ Route('home') }}">Home</a></li>
                                                 <li class="{{  request()->routeIs('products.index') ? 'active' : '' }}"><a href="{{ Route('products.index') }}">Shop</a></li>                        
                                                 <li class="{{  request()->routeIs('posts.index') ? 'active' : '' }}"><a href="{{ Route('posts.index') }}">Blog<span class="new">New</span></a></li>
-                                                <li class="{{  request()->routeIs('contact-us') ? 'active' : '' }}"><a href="{{ Route('contact-us') }}">Contact Us</a></li>
+                                                <li class="{{  request()->routeIs('contact.index') ? 'active' : '' }}"><a href="{{ Route('contact.index') }}">Contact Us</a></li>
                                             </ul>
 										</div>
 									</div>

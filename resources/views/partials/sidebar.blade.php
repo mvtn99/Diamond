@@ -4,29 +4,15 @@
             <div class="single-widget category">
                 <h3 class="title">Categories</h3>
                 <ul class="categor-list">
-                    <li><a href="#">T-shirts</a></li>
-                    <li><a href="#">jacket</a></li>
-                    <li><a href="#">jeans</a></li>
-                    <li><a href="#">sweatshirts</a></li>
-                    <li><a href="#">trousers</a></li>
-                    <li><a href="#">kitwears</a></li>
-                    <li><a href="#">accessories</a></li>
+                    @foreach ($categories as $category)
+                        <li><a href="{{ route('products.index', ['category' => $category->name]) }}">{{ ucfirst($category->name) }}</a></li>
+                    @endforeach
                 </ul>
             </div>
             <!--/ End Single Widget -->
             <!-- Shop By Price -->
                 <div class="single-widget range">
                     <h3 class="title">Shop by Price</h3>
-                    <div class="price-filter">
-                        <div class="price-filter-inner">
-                            <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="width: 26%; left: 24%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 24%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 50%;"></span></div>
-                                <div class="price_slider_amount">
-                                <div class="label-input">
-                                    <span>Range:</span><input type="text" id="amount" name="price" placeholder="Add Your Price">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <ul class="check-box-list">
                         <li>
                             <label class="checkbox-inline" for="1"><input name="news" id="1" type="checkbox">$20 - $50<span class="count">(3)</span></label>
@@ -46,7 +32,7 @@
                 <!-- Single Post -->
                 <div class="single-post first">
                     <div class="image">
-                        <img src="images/single-shop-img1.png" alt="#">
+                        <img src="https://via.placeholder.com/70x70" alt="#">
                     </div>
                     <div class="content">
                         <h5><a href="#">Girls Dress</a></h5>
@@ -64,7 +50,7 @@
                 <!-- Single Post -->
                 <div class="single-post first">
                     <div class="image">
-                        <img src="images/single-shop-img2.png" alt="#">
+                        <img src="https://via.placeholder.com/70x70" alt="#">
                     </div>
                     <div class="content">
                         <h5><a href="#">Women Clothings</a></h5>
@@ -82,7 +68,7 @@
                 <!-- Single Post -->
                 <div class="single-post first">
                     <div class="image">
-                        <img src="images/single-shop-img3.png" alt="#">
+                        <img src="https://via.placeholder.com/70x70" alt="#">
                     </div>
                     <div class="content">
                         <h5><a href="#">Man Tshirt</a></h5>
