@@ -54,7 +54,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>{{ __('Confirm Password') }}<span>*</span></label>
-                                    <input type="password" name="password-confirmation" placeholder="" required="required">
+                                    <input type="password" name="password_confirmation" placeholder="" required="required">
                                 </div>
                             </div>
                             <div class="col-12">

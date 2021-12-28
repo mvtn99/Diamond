@@ -22,11 +22,11 @@ class HomeController extends Controller
     public function index()
     {
         $posts = Post::latest()->take(3)->get();
-        $man_item = Product::where('category_id', 1)->orderBy('created_at', 'desc')->take(9)->get();
-        $woman_item = Product::where('category_id', 2)->orderBy('created_at', 'desc')->take(9)->get();
-        $kids_item = Product::where('category_id', 3)->orderBy('created_at', 'desc')->take(9)->get();
-        $accessory_item = Product::where('category_id', 4)->orderBy('created_at', 'desc')->take(9)->get();
-        $perfume_item = Product::where('category_id', 5)->orderBy('created_at', 'desc')->take(9)->get();
+        $man_item = Product::where('category_id', 1)->orderBy('created_at', 'desc')->take(8)->get();
+        $woman_item = Product::where('category_id', 2)->orderBy('created_at', 'desc')->take(8)->get();
+        $kids_item = Product::where('category_id', 3)->orderBy('created_at', 'desc')->take(8)->get();
+        $accessory_item = Product::where('category_id', 4)->orderBy('created_at', 'desc')->take(8)->get();
+        $perfume_item = Product::where('category_id', 5)->orderBy('created_at', 'desc')->take(8)->get();
         $products = collect(['man' => $man_item, 'woman' => $woman_item, 'kids' => $kids_item, 'accessories' => $accessory_item, 'perfume' => $perfume_item]);
         return view('home', ['products' => $products, 'posts' => $posts]);
     }

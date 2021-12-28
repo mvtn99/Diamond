@@ -95,6 +95,7 @@
                     </div>
                     <div class="tab-content" id="myTabContent">
                         <!-- Start Single Tab -->
+                      
                         @foreach ($products as $key => $group)
                          <div class="tab-pane fade show active" id="{{ $key }}" role="tabpanel">
                             <div class="tab-single">
